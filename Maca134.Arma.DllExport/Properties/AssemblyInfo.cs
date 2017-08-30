@@ -15,6 +15,6 @@ using System.Reflection;
 [assembly: AssemblyCompanyAttribute("Maca134")]
 [assembly: AssemblyProductAttribute("Maca134.Arma.DllExport")]
 [assembly: AssemblyCopyrightAttribute("Copyright 2017")]
-[assembly: AssemblyVersionAttribute("0.0.2.0")]
-[assembly: AssemblyFileVersionAttribute("0.0.2.0")]
+[assembly: AssemblyVersionAttribute("0.0.2.1")]
+[assembly: AssemblyFileVersionAttribute("0.0.2.1")]
 

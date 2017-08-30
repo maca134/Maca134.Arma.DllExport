@@ -98,7 +98,7 @@ namespace Maca134.Arma.DllExport.MsBuild
             try
             {
                 File.Delete(ilPath);
-                File.Delete($"{Path.GetFileNameWithoutExtension(ilPath)}.res");
+                File.Delete(Path.Combine(Path.GetDirectoryName(ilPath), $"{Path.GetFileNameWithoutExtension(ilPath)}.res"));
             }
             catch
             {

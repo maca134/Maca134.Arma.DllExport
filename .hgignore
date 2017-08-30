@@ -1,0 +1,11 @@
+syntax: glob
+build/*
+Maca134.Arma.DllExport/bin/*
+Maca134.Arma.DllExport/obj/*
+packages/*
+nupkg/*
+Maca134.Arma.DllExport.MsBuild/bin/*
+Maca134.Arma.DllExport.MsBuild/obj/*
+.vs/Maca134.Arma.DllExport/v15/.suo
+TestDll/bin/*
+TestDll/obj/*

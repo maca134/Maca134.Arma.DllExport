@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Maca134.Arma.DllExport</id>
+    <version>0.0.1.9</version>
+    <title>Maca134.Arma.DllExport</title>
+    <authors>Maca134</authors>
+    <licenseUrl>https://bitbucket.org/maca134/maca134.arma.dllexport/raw/f29e2a5034d392a3a9cd86172873807381016e69/LICENSE.md</licenseUrl>
+    <projectUrl>https://bitbucket.org/maca134/maca134.arma.dllexport</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simplify C# extensions for ARMA</description>
+    <releaseNotes>See Github</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Data</tags>
+    <references>
+      <reference file="Maca134.Arma.DllExport.dll" />
+    </references>
+  </metadata>
+  <files>
+    <file src="build\**" target="\" />
+  </files>
+</package>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+      $(PostBuildEventDependsOn);
+      Maca134ArmaDllExport
+    </PostBuildEventDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      Maca134ArmaDllExport
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <UsingTask TaskName="Maca134.Arma.DllExport.MSBuild.ArmaDllExportTask" 
+             AssemblyFile="Maca134.Arma.DllExport.MSBuild.dll" />
+  
+  <Target Name="Maca134ArmaDllExport" DependsOnTargets="GetFrameworkPaths">
+    <PropertyGroup>
+      <ArmaDllExportTargetPath Condition="'$(ArmaDllExportTargetPath)' == ''">$(TargetPath)</ArmaDllExportTargetPath>
+      <ArmaDllExportFrameworkPath Condition="'$(ArmaDllExportFrameworkPath)' == ''">$(TargetedFrameworkDir)</ArmaDllExportFrameworkPath>
+      <ArmaDllExportSdkPath Condition="'$(ArmaDllExportSdkPath)' == ''">$(TargetFrameworkSDKToolsDirectory)</ArmaDllExportSdkPath>
+    </PropertyGroup>
+    <ArmaDllExportTask FileName="$(ArmaDllExportTargetPath)"
+                       FrameworkPath="$(ArmaDllExportFrameworkPath)"
+                       SdkPath="$(ArmaDllExportSdkPath)"
+                       WrapperNamespace="$(ArmaDllExportWrapperNamespace)"
+                       WrapperTypeName="$(ArmaDllExportWrapperTypeName)"
+                       WrapperMethodName="$(ArmaDllExportWrapperMethodName)"
+                       KeepIl="$(ArmaDllExportKeepIl)"/>
+  </Target>
+</Project>

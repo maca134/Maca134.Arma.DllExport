@@ -1,0 +1,171 @@
+<project name="Maca134.Arma.DllExport" default="release" basedir=".">
+	<property name="configuration" value="Release" />
+	<property name="basepath" value="${project::get-base-directory()}" />
+	<property name="buildpath" value="${project::get-base-directory()}/build" />
+	<property name="packagepath" value="${project::get-base-directory()}/nupkg" />
+	<property name="versionString" value="0-0-0-0" />
+	<property name="msbuildpath" value="C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/MSBuild/15.0/Bin/MsBuild.exe" />  
+	<property name="signtool.path" value="C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" />
+	<property name="signtool.key" value="X:\Dropbox\Secure\appkeys\maca134.p12" />
+	<property name="hg.path" value="C:\Program Files\TortoiseHg\hg.exe" />
+	<property name="signtool.url" value="http://tsa.startssl.com/rfc3161" />
+	<property name="nuget" value="U:/tools/nuget.exe" />
+	<property name="versionfile" value="${project::get-base-directory()}/version.txt" />
+
+	<target name="version">
+		<if test="${not file::exists(versionfile)}">
+			<echo file="${project::get-base-directory()}/version.txt">0.0.0.0</echo>
+		</if>
+		<loadfile file="version.txt" property="versionString" />
+		<property name="major" value="${version::get-major(version::parse(versionString))}" />
+		<property name="minor" value="${version::get-minor(version::parse(versionString))}" />
+		<property name="build" value="${version::get-build(version::parse(versionString))}" />
+		<property name="revision" value="${version::get-revision(version::parse(versionString))}" />
+		<property name="versionString" value="${major}.${minor}.${build}.${revision}"/>
+		<echo message="${versionString}" />
+	</target>
+
+	<target name="version.increment" depends="version">
+		<property name="revision" value="${int::parse(revision)+1}" />
+		<if test="${revision=='10'}">
+			<property name="revision" value="0" />
+			<property name="build" value="${int::parse(build)+1}" />
+		</if>
+		<if test="${build=='10'}">
+			<property name="build" value="0" />
+			<property name="minor" value="${int::parse(minor)+1}" />
+		</if>
+		<if test="${minor=='10'}">
+			<property name="minor" value="0" />
+			<property name="major" value="${int::parse(major)+1}" />
+		</if>
+		<property name="versionString" value="${major}.${minor}.${build}.${revision}"/>
+		<echo file="${project::get-base-directory()}/version.txt">${versionString}</echo>
+		<echo message="New Version: ${versionString}" />
+	</target>
+
+	<target name="version.set" depends="version.increment">
+		<attrib file="${basepath}/Maca134.Arma.DllExport/Properties/AssemblyInfo.cs" readonly="false" />
+		<asminfo output="${basepath}/Maca134.Arma.DllExport/Properties/AssemblyInfo.cs" language="CSharp">
+			<imports>
+				<import namespace="System" />
+				<import namespace="System.Reflection" />
+			</imports>
+			<attributes>
+				<attribute type="AssemblyTitleAttribute" value="Maca134.Arma.DllExport" />
+				<attribute type="AssemblyCompanyAttribute" value="Maca134" />
+				<attribute type="AssemblyProductAttribute" value="Maca134.Arma.DllExport" />
+				<attribute type="AssemblyCopyrightAttribute" value="Copyright 2017" />
+				<attribute type="AssemblyVersionAttribute" value="${versionString}" />
+				<attribute type="AssemblyFileVersionAttribute" value="${versionString}" />
+			</attributes>
+		</asminfo>
+		<attrib file="${basepath}/Maca134.Arma.DllExport/Properties/AssemblyInfo.cs" readonly="true" />
+
+		<attrib file="${basepath}/Maca134.Arma.DllExport.MsBuild/Properties/AssemblyInfo.cs" readonly="false" />
+		<asminfo output="${basepath}/Maca134.Arma.DllExport.MsBuild/Properties/AssemblyInfo.cs" language="CSharp">
+			<imports>
+				<import namespace="System" />
+				<import namespace="System.Reflection" />
+			</imports>
+			<attributes>
+				<attribute type="AssemblyTitleAttribute" value="Maca134.Arma.DllExport.MsBuild" />
+				<attribute type="AssemblyCompanyAttribute" value="Maca134" />
+				<attribute type="AssemblyProductAttribute" value="Maca134.Arma.DllExport.MsBuild" />
+				<attribute type="AssemblyCopyrightAttribute" value="Copyright 2017" />
+				<attribute type="AssemblyVersionAttribute" value="${versionString}" />
+				<attribute type="AssemblyFileVersionAttribute" value="${versionString}" />
+			</attributes>
+		</asminfo>
+		<attrib file="${basepath}/Maca134.Arma.DllExport.MsBuild/Properties/AssemblyInfo.cs" readonly="true" />
+	</target>
+
+	<target name="clean" depends="version.set">
+		<delete>
+			<fileset basedir="${basepath}">
+				<include name="**/bin/**" />
+				<include name="**/obj/**" />
+				<include name="**/*.suo" />
+			</fileset>
+		</delete>
+		<delete dir="${buildpath}" failonerror="false" />
+		<delete dir="${packagepath}" failonerror="false" />
+	</target>
+
+	<target name="build" depends="clean">
+		<exec program="${msbuildpath}">
+			<arg line='"${basepath}/Maca134.Arma.DllExport.sln"' />
+			<arg line="/property:Configuration=${configuration}" />
+			<arg value="/target:Rebuild" />
+			<arg value="/verbosity:normal" />
+			<arg value="/nologo" />
+		</exec>
+	</target>
+
+	<target name="copy" depends="build">
+		<mkdir dir="${buildpath}/lib/net" />
+		<copy todir="${buildpath}/lib/net">
+			<fileset basedir="${basepath}/Maca134.Arma.DllExport/bin/${configuration}">
+				<include name="**/*.dll" />
+			</fileset>
+		</copy>
+		<mkdir dir="${buildpath}/tools" />
+		<copy todir="${buildpath}/tools">
+			<fileset basedir="${basepath}/Maca134.Arma.DllExport.MsBuild/bin/${configuration}">
+				<include name="**/*.pdb" />
+				<include name="**/*.dll" />
+				<include name="**/*.targets" />
+			</fileset>
+		</copy>
+		<copy todir="${buildpath}/tools">
+			<fileset basedir="${basepath}/scripts">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		<copy file="${basepath}/LICENSE.md" tofile="${buildpath}/LICENSE.md" />
+	</target>
+	
+	<target name="commit" depends="copy">
+		<echo file="${basepath}/buildtime.txt">${datetime::to-string(datetime::now())}</echo>
+		<exec basedir="${basepath}" program="${hg.path}">
+			<arg line="commit" />
+			<arg line="-m" />
+			<arg value="auto commit version ${versionString}" />
+		</exec>
+		<exec basedir="${basepath}" program="${hg.path}">
+			<arg line="tag" />
+			<arg line="-f" />
+			<arg value="${versionString}" />
+		</exec>
+		<exec basedir="${basepath}" program="${hg.path}">
+			<arg line="push" />
+		</exec>
+	</target>
+
+	<target name="sign" depends="commit">
+		<exec program="${signtool.path}">
+			<arg line="sign /v /d Maca134.Arma.DllExport /f &quot;${signtool.key}&quot; /p ${keypassword} /tr &quot;${signtool.url}&quot; &quot;${buildpath}\lib\net\Maca134.Arma.DllExport.dll&quot;" />
+		</exec>
+		<exec program="${signtool.path}">
+			<arg line="sign /v /d Maca134.Arma.DllExport.MsBuild /f &quot;${signtool.key}&quot; /p ${keypassword} /tr &quot;${signtool.url}&quot; &quot;${buildpath}\tools\Maca134.Arma.DllExport.MsBuild.dll&quot; &quot;${buildpath}\tools\Mono.Cecil.dll&quot;" />
+		</exec>
+	</target>
+
+	<target name="package" depends="sign">
+		<xmlpoke file="${basepath}/Maca134.Arma.DllExport.nuspec" xpath="/package/metadata/version" value="${versionString}" />
+		<exec program="${nuget}">
+			<arg line="pack" />
+			<arg line="&quot;${basepath}/Maca134.Arma.DllExport.nuspec&quot;" />
+			<arg line="-Version ${versionString}" />
+			<arg line="-OutputDirectory &quot;${packagepath}&quot;" />
+		</exec>
+	</target>
+
+	<target name="release" depends="package">
+		<exec program="${nuget}">
+			<arg line="push" />
+			<arg line="&quot;${packagepath}/Maca134.Arma.DllExport.${versionString}.nupkg&quot;" />
+			<arg line="-Source https://www.nuget.org/api/v2/package" />
+		</exec>
+	</target>
+</project>

@@ -67,6 +67,15 @@ namespace Maca134.Arma.DllExport.MsBuild
 
             if (!ExportMethod.Parameters.Select(p => p.ParameterType.FullName).ToArray().SequenceEqual(new[] { Module.Import(typeof(string)).FullName, Module.Import(typeof(int)).FullName }))
                 throw new DllExporterException("The method must have the signature: Method(string, int)");
+
+            if (!ExportMethod.DeclaringType.IsPublic)
+                throw new DllExporterException("The class were the export method resides must be public");
+
+            if (!ExportMethod.IsStatic)
+                throw new DllExporterException("The export method must be static");
+
+            if (!ExportMethod.IsPublic)
+                throw new DllExporterException("The export method must be public");
         }
 
         internal void Export()

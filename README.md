@@ -3,6 +3,8 @@ Simplify C# extensions for ARMA
 
 ```PM> Install-Package Maca134.Arma.DllExport```
 
+[![Demo](https://img.youtube.com/vi/MXRBckxwqEw/0.jpg)](http://www.youtube.com/watch?v=MXRBckxwqEw)
+
 ```csharp
 public class SomeClass
 {

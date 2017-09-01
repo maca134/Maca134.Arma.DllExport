@@ -236,7 +236,7 @@ namespace Maca134.Arma.DllExport.MsBuild
             {
                 if (il[i].StartsWith(".corflags "))
                 {
-                    il[i] = $".corflags {Cpu.GetCorFlags().ToString("X8", CultureInfo.InvariantCulture)}";
+                    il[i] = $".corflags 0x{Cpu.GetCorFlags().ToString("X8", CultureInfo.InvariantCulture)}";
                     continue;
                 }
                 if (!il[i].Contains($"'{WrapperNamespace}'.'{WrapperTypeName}'")) continue;

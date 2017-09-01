@@ -9,9 +9,9 @@ namespace Maca134.Arma.DllExport.MsBuild
             switch (cpu)
             {
                 case CpuPlatform.X86:
-                    return 0;
-                case CpuPlatform.X64:
                     return 2;
+                case CpuPlatform.X64:
+                    return 0;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(cpu), cpu, null);
             }

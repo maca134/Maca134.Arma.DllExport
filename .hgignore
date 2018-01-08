@@ -9,3 +9,6 @@ Maca134.Arma.DllExport.MsBuild/obj/*
 .vs/Maca134.Arma.DllExport/v15/.suo
 TestDll/bin/*
 TestDll/obj/*
+.vs/Maca134.Arma.DllExport/v15/sqlite3/storage.ide
+TestConsole/bin/Release/*
+TestConsole/obj/Release/*

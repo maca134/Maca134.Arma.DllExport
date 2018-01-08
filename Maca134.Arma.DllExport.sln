@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maca134.Arma.DllExport", "Maca134.Arma.DllExport\Maca134.Arma.DllExport.csproj", "{71999739-5953-4C86-B8A1-22F212171995}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maca134.Arma.DllExport.MsBuild", "Maca134.Arma.DllExport.MsBuild\Maca134.Arma.DllExport.MsBuild.csproj", "{203924DD-B8D3-4D38-92B3-B01A5ACB778D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{301D5EF6-86C6-4FA0-932D-97A53DCE8AC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,15 @@ Global
 		{203924DD-B8D3-4D38-92B3-B01A5ACB778D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{203924DD-B8D3-4D38-92B3-B01A5ACB778D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{203924DD-B8D3-4D38-92B3-B01A5ACB778D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{301D5EF6-86C6-4FA0-932D-97A53DCE8AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{301D5EF6-86C6-4FA0-932D-97A53DCE8AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{301D5EF6-86C6-4FA0-932D-97A53DCE8AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{301D5EF6-86C6-4FA0-932D-97A53DCE8AC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2EDBE567-16B1-47C1-BBFF-16FB1BC6B59E}
 	EndGlobalSection
 EndGlobal

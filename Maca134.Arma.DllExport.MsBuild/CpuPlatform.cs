@@ -1,6 +1,6 @@
 ﻿namespace Maca134.Arma.DllExport.MsBuild
 {
-    internal enum CpuPlatform
+    public enum CpuPlatform
     {
         None,
         X86,

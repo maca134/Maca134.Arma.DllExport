@@ -9,26 +9,26 @@ using Mono.Cecil.Cil;
 
 namespace Maca134.Arma.DllExport.MsBuild
 {
-    internal class DllExporter
+    public class DllExporter
     {
-        internal static string IlasmPath { get; set; }
-        internal static string IldasmPath { get; set; }
+        public static string IlasmPath { get; set; }
+        public static string IldasmPath { get; set; }
 
         private bool _injected;
 
-        internal bool FoundMethod => ExportMethod != null;
-        internal string Target { get; }
-        internal ModuleDefinition Module { get; }
-        internal MethodDefinition ExportMethod { get; }
+        public bool FoundMethod => ExportMethod != null;
+        public string Target { get; }
+        public ModuleDefinition Module { get; }
+        public MethodDefinition ExportMethod { get; }
 
-        internal string WrapperNamespace { get; set; } = "Maca134.Arma.DllExport";
-        internal string WrapperTypeName { get; set; } = "DllExportWrapper";
-        internal string WrapperMethodName { get; set; } = "RVExtension";
-        internal bool KeepIl { get; set; } = true;
-        internal Action<string> Log = s => Console.Write(s);
+        public string WrapperNamespace { get; set; } = "Maca134.Arma.DllExport";
+        public string WrapperTypeName { get; set; } = "DllExportWrapper";
+        public string WrapperMethodName { get; set; } = "RVExtension";
+        public bool KeepIl { get; set; } = true;
+        public Action<string> Log = s => Console.WriteLine(s);
 
-        internal bool Debug => Module.HasDebugHeader;
-        internal CpuPlatform Cpu
+        public bool Debug => Module.HasDebugHeader;
+        public CpuPlatform Cpu
         {
             get
             {
@@ -40,7 +40,7 @@ namespace Maca134.Arma.DllExport.MsBuild
             }
         }
 
-        internal DllExporter(string target)
+        public DllExporter(string target)
         {
             Target = target;
             Module = ModuleDefinition.ReadModule(Target);
@@ -78,7 +78,7 @@ namespace Maca134.Arma.DllExport.MsBuild
                 throw new DllExporterException("The export method must be public");
         }
 
-        internal void Export()
+        public void Export()
         {
             if (_injected)
                 throw new DllExporterException("you can only inject into a dll once");
@@ -188,8 +188,8 @@ namespace Maca134.Arma.DllExport.MsBuild
                 Arguments = arguments,
                 CreateNoWindow = true,
                 UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
+                //RedirectStandardOutput = true,
+                //RedirectStandardError = true
             }))
             {
                 process?.WaitForExit();
@@ -206,7 +206,7 @@ namespace Maca134.Arma.DllExport.MsBuild
                 throw new DllExporterException("ilasm not found, please set ArmaDllExportFrameworkPath and ArmaDllExportSdkPath build properties");
             var arguments = string.Format(
                 CultureInfo.InvariantCulture,
-                "/nologo \"/out:{0}\" \"{1}\" {2} \"{3}\" {4} {5}",
+                "/nologo \"/out:{0}\" {2} {4} {5} \"{1}\" \"{3}\"",
                 Target,
                 ilPath,
                 "/" + Path.GetExtension(Target)?.Trim('.', '"').ToUpperInvariant(),
@@ -215,14 +215,15 @@ namespace Maca134.Arma.DllExport.MsBuild
                 Debug ? "/debug" : "/optimize",
                 Cpu == CpuPlatform.X86 ? "" : "/X64"
             );
+            Console.WriteLine(arguments);
             using (var process = Process.Start(new ProcessStartInfo
             {
                 FileName = ilasm,
                 Arguments = arguments,
                 CreateNoWindow = true,
                 UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
+                //RedirectStandardOutput = true,
+                //RedirectStandardError = true
             }))
             {
                 process?.WaitForExit();
